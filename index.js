@@ -1,11 +1,23 @@
 import express, { json } from "express";
 import dotenv from "dotenv";
 import Joi from "joi";
+import { log } from "./logger.js";
+import { auth } from "./auth.js";
+import helmet from "helmet";
+import morgan from "morgan";
 dotenv.config();
 
 const app = express();
 
+console.log(`App: ${app.get("env")}`);
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+app.use(helmet());
+app.use(morgan("tiny"));
+app.use(log);
+app.use(auth);
 
 const courses = [
     {
