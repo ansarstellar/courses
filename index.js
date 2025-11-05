@@ -5,6 +5,7 @@ import { log } from "./logger.js";
 import { auth } from "./auth.js";
 import helmet from "helmet";
 import morgan from "morgan";
+import config from "config";
 dotenv.config();
 
 const app = express();
@@ -19,6 +20,9 @@ app.use(morgan("tiny"));
 app.use(log);
 app.use(auth);
 
+// configuration
+console.log(`Application Name: ${config.get("name")}`);
+console.log(`Mail Server: ${config.get("mail.host")}`);
 const courses = [
     {
         id: 1,
