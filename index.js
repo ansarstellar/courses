@@ -2,15 +2,13 @@ import express, { json } from "express";
 import dotenv from "dotenv";
 import Joi from "joi";
 import { log } from "./logger.js";
-import { auth } from "./auth.js";
 import helmet from "helmet";
 import morgan from "morgan";
-import config from "config";
 dotenv.config();
-
 const app = express();
 
-console.log(`App: ${app.get("env")}`);
+app.set("view engine", "pug");
+app.set("views", "./views");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -18,11 +16,7 @@ app.use(express.static("public"));
 app.use(helmet());
 app.use(morgan("tiny"));
 app.use(log);
-app.use(auth);
 
-// configuration
-console.log(`Application Name: ${config.get("name")}`);
-console.log(`Mail Server: ${config.get("mail.host")}`);
 const courses = [
     {
         id: 1,
@@ -38,7 +32,7 @@ const courses = [
     },
 ];
 app.get("/", (req, res) => {
-    res.send("Hello,d!");
+    res.render("index", { title: "My Express App", message: "Hello" });
 });
 
 app.get("/api/courses", (req, res) => {
